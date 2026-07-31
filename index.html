@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio — Product Designer [INTER PREVIEW]</title>
+<title>Studio — Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-<!-- Inter preview: no other webfont loaded, so what you see IS Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet">
+<!-- General Sans kept as the fallback face; safe to delete once Google Sans is confirmed rendering -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #ffffff;
@@ -47,32 +49,25 @@
      display = page headline, title = project name,
      body = prose, label = every uppercase structural cue. */
   :root {
-    --font-sans: "Inter", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --font-sans: "Google Sans", "Google Sans Flex", "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
     --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
     /* Type scale measured from the reference at 430px; desktop step extrapolated.
        Note the reference carries hierarchy through WEIGHT + TRACKING, not through
        a dim third grey — labels are pure white at 800 with positive tracking. */
-    --fs-lead: 31px;      /* -1px: Inter's x-height reads larger */
+    --fs-lead: 32px;      /* measured: reference project titles */
     --fs-body: 16px;
     --fs-label: 12px;
     --fs-row: 20px;       /* 4px down from the reference's measured 24px */
-    /* ---- Retuned for Inter -------------------------------------------
-       Inter ships spaced for 12-14px UI text, so it needs progressively
-       tighter tracking as size goes up (its own optical-size guidance:
-       ~0 at 12px, -0.011em at 16px, -0.021em at 32px). It also has a much
-       larger x-height than Google Sans, so the same line-height ratio
-       reads tighter — leading is opened to compensate. And Inter's weights
-       render visually heavier, so each step is pulled back one notch. */
-    --ls-lead: -0.026em;  /* 31px display, tightened */
-    --ls-row: -0.017em;   /* 20px row titles */
-    --ls-body: -0.011em;  /* 16px body */
-    --ls-label: 1.6px;    /* uppercase still wants positive tracking */
-    --lh-lead: 1.3;       /* opened: Inter's tall x-height fills the line */
-    --lh-row: 1.45;
-    --lh-body: 1.55;      /* Inter reads best at 1.5-1.6 for prose */
+    --ls-lead: -0.01em;   /* looser than the measured -0.02em */
+    --ls-row: -0.01em;    /* tightened for the heavier weight */
+    --ls-body: -0.04px;
+    --ls-label: 2px;
+    --lh-lead: 1.25;      /* a touch more air; bold text reads denser */
+    --lh-row: 1.4;        /* measured: 33.6px on 24px */
+    --lh-body: 1.4;
     --lh-label: 1.5;
-    --w-lead: 550;      /* Inter 600 reads heavier than Google Sans 600 */
-    --w-label: 700;     /* 800 in Inter is very heavy at 12px caps */
+    --w-lead: 600;      /* heavier than the reference's measured 500 */
+    --w-label: 800;
     /* Spacing scale observed on the reference: 8 / 24 / 48 / 96 / 160 / 256 */
     --sp-1: 8px;
     --sp-2: 24px;
@@ -88,8 +83,6 @@
   html, body { overflow-x: hidden; max-width: 100%; }
   html { -webkit-font-smoothing: antialiased; }
   body {
-    font-optical-sizing: auto;
-    font-feature-settings: 'calt' 1;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-sans);
@@ -1697,13 +1690,12 @@
     /* Measured directly from the reference at 430px */
     :root {
       --fs-lead: 24px;
-      --fs-body: 13px;    /* 2px down; About + role/company subtext */
+      --fs-body: 14px;    /* About + role/company subtext */
       --fs-label: 12px;
-      --w-label: 500;
-      --ls-label: 1.4px;  /* Inter caps are wide; less tracking needed */
+      --w-label: 500;     /* uppercase labels read heavy at 800 on phone */
       --fs-row: 18px;     /* About heading + company/role, +2px */
     }
-    #view-work .hero-credits { margin-top: var(--sp-3); }
+    #view-work .hero-credits { margin-top: 36px; }   /* off-scale, chosen */
     #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-4); }
 
 
