@@ -58,18 +58,15 @@
     --fs-body: 16px;
     --fs-label: 12px;
     --fs-row: 20px;       /* 4px down from the reference's measured 24px */
-    --ls-lead: -0.02em;   /* measured: -0.64px at 32px. Headings DO track tight */
-    --ls-row: normal;     /* measured: 24px row titles have no tracking */
+    --ls-lead: -0.01em;   /* looser than the measured -0.02em */
+    --ls-row: -0.01em;    /* tightened for the heavier weight */
     --ls-body: -0.04px;
     --ls-label: 2px;
-    /* Reference's quieter eyebrow: lighter weight + tighter tracking */
-    --ls-label-sm: 1px;
-    --w-label-sm: 700;
-    --lh-lead: 1.2;       /* measured: 38.4px on 32px */
+    --lh-lead: 1.25;      /* a touch more air; bold text reads denser */
     --lh-row: 1.4;        /* measured: 33.6px on 24px */
     --lh-body: 1.4;
     --lh-label: 1.5;
-    --w-lead: 500;      /* measured: reference headings are 500, not bold */
+    --w-lead: 600;      /* heavier than the reference's measured 500 */
     --w-label: 800;
     /* Spacing scale observed on the reference: 8 / 24 / 48 / 96 / 160 / 256 */
     --sp-1: 8px;
@@ -223,7 +220,7 @@
   @media (max-width: 620px) {
     .bar { flex-wrap: wrap; gap: 14px; }
     .bar .right { gap: 12px; }
-    .glass-tab { padding: 9px 19px; font-size: 14px; }
+    .glass-tab { padding: 8px 17px; font-size: 13px; }
   }
   .toggle {
     position: relative;
@@ -1633,13 +1630,11 @@
 
   #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-5); }
   #view-work .project .info { padding: var(--sp-2) 0 0; }
-  /* Project meta drops to the reference's smaller eyebrow step and to grey,
-     so it reads as a caption rather than competing with the section label
-     and the button, which stay white at 12/800/+2px. */
+  /* SWIGGY | 2026 uses the same treatment as SELECTED WORK and
+     JOURNEY SO FAR — weight, tracking and colour all from the label tokens. */
   #view-work .project .info .meta {
-    font-size: var(--fs-label);
-    font-weight: var(--w-label-sm);
-    letter-spacing: var(--ls-label-sm);
+    font-weight: var(--w-label);
+    letter-spacing: var(--ls-label);
     color: var(--t2);
     margin-bottom: var(--sp-1);
   }
@@ -1689,15 +1684,18 @@
 
   /* Mobile */
   @media (max-width: 640px) {
+    /* Copy that is desktop-only — the About intro reads long on a phone */
+    .desktop-only { display: none; }
+
     /* Measured directly from the reference at 430px */
     :root {
       --fs-lead: 24px;
       --fs-body: 15px;    /* up from the measured 13px for readability */
       --fs-label: 12px;
-      --w-label: 600;     /* uppercase labels read heavy at 800 on phone */
+      --w-label: 400;     /* uppercase labels read heavy at 800 on phone */
       --fs-row: 18px;     /* About heading + company/role, +2px */
     }
-    #view-work .hero-credits { margin-top: var(--sp-2); }
+    #view-work .hero-credits { margin-top: 28px; }   /* 24 + 4 */
     #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-4); }
 
 
@@ -2228,7 +2226,7 @@
         </div>
         <div class="profile-text">
           <h2 class="profile-heading">Yes, Smit is my real name!</h2>
-          <p class="profile-para">I&rsquo;m a self-taught product designer who loves building digital experiences that leave a positive impact on people and help businesses grow. Most of my work sits where consumer behaviour meets business goals &mdash; loyalty, growth, and the small details that quietly decide whether someone comes back.</p>
+          <p class="profile-para">I&rsquo;m a self-taught product designer who loves building digital experiences that leave a positive impact on people and help businesses grow. <span class="desktop-only">Most of my work sits where consumer behaviour meets business goals &mdash; loyalty, growth, and the small details that quietly decide whether someone comes back.</span></p>
           <p class="profile-para">When I&rsquo;m not designing, you&rsquo;ll find me nerding-out about recent football/cricket matches, playing FIFA, clicking/editing pictures. Feel free to share your Ultimate Team ID if you also play FIFA &mdash; always up for a game. I also love exploring new places I&rsquo;ve never been to (cliche, but the truth). See you around!</p>
         </div>
       </div>
