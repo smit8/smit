@@ -1697,13 +1697,13 @@
     /* Measured directly from the reference at 430px */
     :root {
       --fs-lead: 24px;
-      --fs-body: 15px;    /* up from the measured 13px for readability */
+      --fs-body: 13px;    /* 2px down; About + role/company subtext */
       --fs-label: 12px;
       --w-label: 500;
       --ls-label: 1.4px;  /* Inter caps are wide; less tracking needed */
       --fs-row: 18px;     /* About heading + company/role, +2px */
     }
-    #view-work .hero-credits { margin-top: 28px; }   /* 24 + 4 */
+    #view-work .hero-credits { margin-top: var(--sp-3); }
     #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-4); }
 
 
