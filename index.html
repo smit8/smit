@@ -1692,9 +1692,10 @@
     /* Measured directly from the reference at 430px */
     :root {
       --fs-lead: 24px;
-      --fs-body: 13px;
+      --fs-body: 15px;    /* up from the measured 13px for readability */
       --fs-label: 12px;
-      --fs-row: 16px;     /* NOT measured — reference headings only read at desktop */
+      --w-label: 600;     /* uppercase labels read heavy at 800 on phone */
+      --fs-row: 18px;     /* About heading + company/role, +2px */
     }
     #view-work .hero-credits { margin-top: var(--sp-2); }
     #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-4); }
@@ -1705,7 +1706,7 @@
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      padding: var(--sp-3) 0 0;
+      padding: var(--sp-2) 0 0;
       position: static;
       justify-content: initial;
       flex-wrap: initial;
