@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet">
+<!-- General Sans kept as the fallback face; safe to delete once Google Sans is confirmed rendering -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet">
 <style>
@@ -11,48 +15,96 @@
     --bg: #ffffff;
     --ink: #16150f;
     --muted: #8a887e;
-    --line: #e6e4dc;
-    --hover: #f6f5f0;
+    --line: #e1e1e1;
+    --hover: #f3f3f3;
     --accent: #16150f;
-    --glass-fill: rgba(22, 21, 15, 0.045);
+    --glass-fill: rgba(19, 19, 19, 0.045);
     --glass-fill-strong: rgba(255, 255, 255, 0.55);
-    --glass-border: rgba(22, 21, 15, 0.09);
+    --glass-border: rgba(19, 19, 19, 0.09);
     --glass-highlight: rgba(255, 255, 255, 0.7);
+    /* Neutral text ramp — three tiers, no hue */
+    --t1: #171717;
+    --t2: #6b6b6b;   /* light theme: dimmer means lighter here */
+    --t3: #8a8a8a;
+    --rule: rgba(23, 23, 23, 0.09);
   }
   html[data-theme="dark"] {
-    --bg: #100f0c;
-    --ink: #f2f0e9;
+    --bg: #0a0a0a;
+    --ink: #ffffff;
     --muted: #8f8d84;
-    --line: #2a2823;
-    --hover: #1a1915;
-    --accent: #f2f0e9;
+    --line: #272727;
+    --hover: #181818;
+    --accent: #ffffff;
     --glass-fill: rgba(255, 255, 255, 0.045);
-    --glass-fill-strong: rgba(30, 29, 25, 0.55);
+    --glass-fill-strong: rgba(28, 28, 28, 0.55);
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-highlight: rgba(255, 255, 255, 0.22);
+    /* Neutral text ramp — three tiers, no hue */
+    --t1: #ffffff;
+    --t2: #7d7d7d;   /* dimmed from the reference's #8f8f8f */
+    --t3: #8f8f8f;
+    --rule: rgba(255, 255, 255, 0.07);
+  }
+  /* Type scale — four steps, each with a clear job.
+     display = page headline, title = project name,
+     body = prose, label = every uppercase structural cue. */
+  :root {
+    --font-sans: "Google Sans", "Google Sans Flex", "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    /* Type scale measured from the reference at 430px; desktop step extrapolated.
+       Note the reference carries hierarchy through WEIGHT + TRACKING, not through
+       a dim third grey — labels are pure white at 800 with positive tracking. */
+    --fs-lead: 32px;      /* measured: reference project titles */
+    --fs-body: 16px;
+    --fs-label: 12px;
+    --fs-row: 20px;       /* 4px down from the reference's measured 24px */
+    --ls-lead: -0.02em;   /* measured: -0.64px at 32px. Headings DO track tight */
+    --ls-row: normal;     /* measured: 24px row titles have no tracking */
+    --ls-body: -0.04px;
+    --ls-label: 2px;
+    /* Reference's quieter eyebrow: lighter weight + tighter tracking */
+    --ls-label-sm: 1px;
+    --w-label-sm: 700;
+    --lh-lead: 1.2;       /* measured: 38.4px on 32px */
+    --lh-row: 1.4;        /* measured: 33.6px on 24px */
+    --lh-body: 1.4;
+    --lh-label: 1.5;
+    --w-lead: 500;      /* measured: reference headings are 500, not bold */
+    --w-label: 800;
+    /* Spacing scale observed on the reference: 8 / 24 / 48 / 96 / 160 / 256 */
+    --sp-1: 8px;
+    --sp-2: 24px;
+    --sp-3: 48px;
+    --sp-4: 96px;
+    --sp-5: 160px;
+    --sp-6: 256px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* Absolutely-positioned brand labels/glows and the tilted sticky note can
+     stick out past the viewport, which widens the scroll area and makes the
+     page look zoomed in on a phone. Clip it horizontally. */
+  html, body { overflow-x: hidden; max-width: 100%; }
   html { -webkit-font-smoothing: antialiased; }
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     font-size: 15px;
     line-height: 1.5;
     letter-spacing: -0.01em;
     transition: background 0.2s ease, color 0.2s ease;
   }
   .mono {
-    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .wrap {
-    max-width: 820px;
+    max-width: 820px;   /* reference runs 1440px — left narrow deliberately */
     margin: 0 auto;
-    padding: 0 28px;
+    padding: 0 var(--sp-2);
   }
   a { color: inherit; text-decoration: none; }
 
@@ -61,12 +113,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 32px 0 0;
+    padding: var(--sp-2) 0 0;
   }
   .bar .name {
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 20px;
+    font-size: 23px;
     line-height: 1;
     letter-spacing: -0.02em;
     /* button reset — .name is a <button> so it can navigate back to Work */
@@ -89,7 +141,7 @@
     align-items: center;
     gap: 2px;
     padding: 4px;
-    border-radius: 12px;
+    border-radius: 999px;
     isolation: isolate;
     /* dark, barely-there fill sitting just above the background */
     background: rgba(255, 255, 255, 0.035);
@@ -110,7 +162,7 @@
     padding: 8px 18px;
     border: 0;
     background: transparent;
-    border-radius: 8px;
+    border-radius: 999px;
     font-family: inherit;
     font-size: 13px;
     font-weight: 500;
@@ -135,7 +187,7 @@
     left: 0;
     height: 0;
     width: 0;
-    border-radius: 8px;
+    border-radius: 999px;
     background: rgba(255, 255, 255, 0.072);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     /* spring-y motion — slight overshoot, then settles */
@@ -171,7 +223,7 @@
   @media (max-width: 620px) {
     .bar { flex-wrap: wrap; gap: 14px; }
     .bar .right { gap: 12px; }
-    .glass-tab { padding: 7px 14px; font-size: 12px; }
+    .glass-tab { padding: 9px 19px; font-size: 14px; }
   }
   .toggle {
     position: relative;
@@ -200,6 +252,9 @@
 
   /* Contact — corner sticky note (matches reference) */
   .sticky {
+    /* One source of truth for the email line's type, so the real email,
+       the confirmation and the ghost line can never diverge in size. */
+    --note-email-fs: 17px;
     position: fixed;
     top: 0;
     right: 0;
@@ -252,7 +307,8 @@
 
   .sticky .note-divider {
     height: 1px;
-    background: rgba(43, 43, 43, 0.18);
+    /* dark-on-yellow, so it can't use --rule; dimmed by the same ratio */
+    background: rgba(43, 43, 43, 0.13);
     margin: 0 0 16px 0;
     opacity: 0;
     transition: opacity 0.28s ease 0.08s;
@@ -299,13 +355,27 @@
     gap: 8px;
   }
   .sticky .note-email-link {
-    font-size: 17px;
+    font-size: var(--note-email-fs);
     letter-spacing: 0.02em;
     color: #2b2b2b;
     text-decoration: none;
     transition: color 0.18s ease;
     cursor: pointer;
   }
+  /* The roll track: on desktop only the first line exists, laid out exactly
+     as the old row was. Lines 2 and 3 are touch-only. */
+  .sticky .note-email-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sticky .note-email-line-copied,
+  .sticky .note-email-link-ghost {
+    font-size: var(--note-email-fs);
+    letter-spacing: 0.02em;
+  }
+  .sticky .note-email-line-copied,
+  .sticky .note-email-line-ghost { display: none; }
   .sticky .note-copy {
     position: relative;
     background: none;
@@ -335,18 +405,22 @@
     pointer-events: none;
     transition: opacity 0.18s ease, color 0.18s ease;
     white-space: nowrap;
-    transform-origin: center center;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    /* clip box for the credits roll — the inner line slides through it */
+    height: 18px;
+    line-height: 18px;
+    overflow: hidden;
   }
-  /* Flip animation: rotates on X-axis; JS swaps text at midpoint (edge-on) */
-  .sticky .note-copy-label.flip {
-    animation: note-copy-flip 0.44s cubic-bezier(0.4, 0.05, 0.25, 1);
+  .sticky .note-copy-label-inner { display: block; }
+  /* Credits roll: outgoing line exits upward, incoming line enters from
+     below. JS swaps the text at the midpoint, while it's out of the clip box. */
+  .sticky .note-copy-label.roll .note-copy-label-inner {
+    animation: note-copy-roll 0.44s cubic-bezier(0.4, 0.05, 0.25, 1);
   }
-  @keyframes note-copy-flip {
-    0%   { transform: translateX(-50%) rotateX(0deg); }
-    50%  { transform: translateX(-50%) rotateX(90deg); }
-    100% { transform: translateX(-50%) rotateX(0deg); }
+  @keyframes note-copy-roll {
+    0%   { transform: translateY(0); }
+    49%  { transform: translateY(-100%); }
+    50%  { transform: translateY(100%); }
+    100% { transform: translateY(0); }
   }
   /* Hover the row → email text, copy icon, and copy label all turn blue together */
   .sticky .note-email-row:hover .note-email-link { color: #3F3DFF; }
@@ -387,6 +461,15 @@
     --eye-x: 0px;
     --eye-y: 0px;
   }
+
+  /* ---- Hero illustration: DISABLED ----------------------------------
+     Markup and all styles above are intact. To bring the doodle back,
+     delete this one rule. It must stay AFTER the block above, which sets
+     display: inline-block — same specificity, so source order decides.
+     The eye-tracking JS is guarded separately and does no work while
+     this is hidden. */
+  .hero-art-wrap { display: none !important; }
+
   .hero-art {
     width: 95px;
     height: auto;
@@ -430,7 +513,7 @@
   .eye-right { left: 69%; top: 24%; }
   .hero h1 {
     color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     font-size: 28px;
     font-style: normal;
     font-weight: 500;
@@ -446,12 +529,17 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
-    transition: filter 0.35s ease;
-    -webkit-text-fill-color: currentColor;
     --gx: 50%;
     --gy: 50%;
   }
-  .hero h1 .swiggy-brand:hover {
+  /* The gradient and glow live here, not on the wrapper — a CSS filter
+     applies to the whole subtree, which was painting the orange glow
+     around the tooltip as well as the word. */
+  .hero h1 .swiggy-brand .swiggy-word {
+    -webkit-text-fill-color: currentColor;
+    transition: filter 0.35s ease;
+  }
+  .hero h1 .swiggy-brand:hover .swiggy-word {
     background: radial-gradient(circle at var(--gx) var(--gy),
       #FFD24A 0%,
       #FFB84D 14%,
@@ -470,8 +558,8 @@
     margin-top: 46px;
   }
   .hero-credits .credits-label {
-    color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: var(--t2);
+    font-family: var(--font-sans);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -530,7 +618,7 @@
     color: rgba(255, 255, 255, 0.9);
     padding: 9px 17px;
     border-radius: 11px;
-    background: #1c1b19;
+    background: #1b1b1b;
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.13),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
@@ -586,8 +674,8 @@
     position: absolute;
     top: calc(100% + 2px);
     left: 50%;
-    width: 50px;
-    height: 28px;
+    width: 34px;
+    height: 20px;
     transform: translateX(-50%) translateY(4px);
     opacity: 0;
     transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.34, 1.4, 0.5, 1);
@@ -605,6 +693,9 @@
     font-weight: 500;
     letter-spacing: -0.01em;
     white-space: nowrap;
+    /* Labels are centred on a 48px tile but can be far wider ("Booking.com"),
+       so on narrow screens the ends ran past the page edge and were clipped.
+       Anchoring the first two from their left edge keeps them on-screen. */
     background: linear-gradient(180deg, var(--brand-soft, #fff) 0%, #fff 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -626,21 +717,21 @@
   }
 
   /* Projects — single stacked column */
+  /* One label treatment shared by both views: reference nav spec,
+     12 / 800 / +2px / uppercase, white. */
   .section-label {
-    color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 115%;
-    letter-spacing: 0.14px;
-    opacity: 0.5;
-    padding: 0 0 12px;
-    margin-top: 48px;
-    /* Border alpha is 0.28 to counter the element's opacity: 0.5,
-       landing at the same rendered 0.14 as the footer divider */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
-    margin-bottom: 36px;
+    color: var(--t2);
+    font-family: var(--font-sans);
+    font-size: var(--fs-label);
+    font-weight: var(--w-label);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    opacity: 1;
+    padding: 0 0 12px;   /* +4 over --sp-1, intentional off-scale nudge */
+    margin-top: 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: var(--sp-2);
   }
   .projects {
     padding-bottom: 80px;
@@ -758,23 +849,22 @@
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(242, 240, 233, 0.6);
+    color: var(--t2);
     margin-bottom: 10px;
   }
-  .project .info .meta .year { font-size: 15px; }
   .project .info .meta .sep {
     margin: 0;
-    color: rgba(242, 240, 233, 0.22);
+    color: rgba(255, 255, 255, 0.22);
   }
   .project .info h3 {
     font-size: 32px;
     font-weight: 500;
     letter-spacing: -0.032em;
     line-height: 1.1;
-    color: #f7f5ee;
+    color: var(--t1);
   }
   .project .info p {
-    color: rgba(242, 240, 233, 0.675);
+    color: var(--t2);
     font-size: 18px;
     font-weight: 400;
     line-height: 1.5;
@@ -784,8 +874,8 @@
   }
   /* green highlight for headline metrics */
   .project .info p .hl {
-    color: #5ee39f;
-    font-weight: 400;
+    color: var(--t1);
+    font-weight: 500;
   }
   .project .btn {
     position: relative;
@@ -1117,8 +1207,8 @@
     transform: translateX(-50%) translateY(4px);
     padding: 5px 10px;
     border-radius: 999px;
-    background: rgba(20, 19, 15, 0.92);
-    color: #f2f0e9;
+    background: rgba(18, 18, 18, 0.92);
+    color: var(--t1);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: -0.005em;
@@ -1200,24 +1290,29 @@
 
   /* About */
   /* About page — Experience section */
-  .about { padding: 40px 0 80px; }
+  /* Left column width is shared by the profile grid and the experience grid,
+     so the profile text and the role text sit on the same left edge. */
+  .about { padding: var(--sp-3) 0 var(--sp-4); --about-col: 260px; }
 
   /* Profile block — postal-stamp image + intro text
      The stamp scallops and dark border are already baked into the PNG,
      so the container only sizes it. */
   .profile-block {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: var(--about-col) 1fr;
     gap: 56px;
     align-items: start;
-    padding: 80px 0 128px;
+    padding: var(--sp-4) 0 var(--sp-4);
     perspective: 900px;
   }
   .profile-stamp {
     /* --tilt-x / --tilt-y are set by JS from cursor position while hovering */
     --tilt-x: 0deg;
     --tilt-y: 0deg;
-    width: 260px;
+    /* Deliberately NOT --about-col: that token sizes the grid column and
+       keeps the profile text aligned with the experience rows. Only the
+       image shrinks; the column it sits in is unchanged. */
+    width: 232px;
     padding-bottom: 32px;
     transform: rotate(-4deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
     transform-origin: center;
@@ -1240,29 +1335,31 @@
     height: auto;
   }
   .profile-text {
-    padding-top: 4px;
+    padding-top: 0;
   }
   .profile-heading {
-    color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 115%;
-    letter-spacing: 0.14px;
-    margin: 0 0 20px;
+    color: var(--t1);
+    font-family: var(--font-sans);
+    /* matches the experience role titles: 20 / 500 / 1.4 / normal */
+    font-size: var(--fs-row);
+    font-weight: var(--w-lead);
+    line-height: var(--lh-row);
+    letter-spacing: var(--ls-row);
+    margin: 0 0 var(--sp-1);
   }
+  /* Reference body spec exactly: 400 weight, 1.4 line-height,
+     -0.04px tracking, #8f8f8f. Size is --fs-body (13px measured at 430px). */
   .profile-para {
-    color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 18px;
-    font-style: normal;
+    color: var(--t2);
+    font-family: var(--font-sans);
+    /* matches .exp-description exactly */
+    font-size: var(--fs-body);
     font-weight: 400;
-    line-height: 135%;
-    letter-spacing: 0.5px;
-    opacity: 0.54;
-    margin: 0 0 15px;
-    max-width: 52ch;
+    line-height: var(--lh-body);
+    letter-spacing: var(--ls-body);
+    opacity: 1;
+    margin: 0 0 var(--sp-2);
+    max-width: 60ch;
   }
   .profile-para:last-child { margin-bottom: 0; }
 
@@ -1277,11 +1374,7 @@
   }
 
   /* "Journey so far" heading — same solid separator as every other section label */
-  .about .section-label {
-    padding: 0 0 16px;
-    margin-top: 0;
-    margin-bottom: 32px;
-  }
+
 
   .experience-list {
     display: flex;
@@ -1290,12 +1383,12 @@
   /* Item separators — custom dashed (6px dash, 3px gap) via background-image */
   .experience-item {
     display: grid;
-    grid-template-columns: 288px 1fr;
+    grid-template-columns: var(--about-col) 1fr;
     gap: 56px;
-    padding: 28px 0;
+    padding: 24px 0;
     background-image: linear-gradient(
       to right,
-      rgba(255, 255, 255, 0.10) 6px,
+      var(--rule) 6px,
       transparent 6px
     );
     background-size: 9px 1px;
@@ -1307,40 +1400,46 @@
 
   .exp-company,
   .exp-role {
-    color: #FFF;
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 115%;
-    letter-spacing: 0.1px;
-    margin: 0 0 8px;
+    color: var(--t1);
+    font-family: var(--font-sans);
+    font-size: var(--fs-row);
+    font-weight: var(--w-lead);
+    line-height: var(--lh-row);
+    letter-spacing: var(--ls-row);
+    margin: 0 0 6px;
   }
-  .exp-dates,
-  .exp-description {
-    color: rgba(255, 255, 255, 0.54);
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 16px;
-    font-style: normal;
+  .exp-dates {
+    color: var(--t2);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
     font-weight: 400;
-    line-height: 100%;
-    letter-spacing: 0.4px;
+    line-height: var(--lh-body);
+    letter-spacing: var(--ls-body);
     margin: 0;
   }
-  .exp-description { max-width: 52ch; line-height: 120%; }
+  .exp-description {
+    color: var(--t2);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    font-weight: 400;
+    line-height: var(--lh-body);
+    letter-spacing: var(--ls-body);
+    margin: 0;
+  }
+  .exp-description { max-width: 60ch; }
 
   /* Footer */
-  footer { padding: 144px 0 48px; }
+  footer { padding: var(--sp-5) 0 var(--sp-3); }
   .footer-grid {
     padding-top: 0;
     margin-top: -12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1px solid var(--rule);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 24px;
     align-items: end;
     color: rgba(255, 255, 255, 0.4);
-    font-family: "General Sans", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     font-size: 13px;
     font-style: normal;
     font-weight: 500;
@@ -1401,31 +1500,212 @@
     height: 100%;
   }
 
+  /* Swiggy tooltip — pill and tail are ONE path, not two overlapping boxes.
+     clip-path gives the silhouette (so the backdrop blur and fill follow the
+     tail), and an SVG background draws the single continuous outline. The
+     stroke is 2px wide and centred on the path, so clip-path removes its
+     outer half and leaves a clean 1px edge inside the shape. */
+  .hero h1 .swiggy-brand .brand-tip {
+    position: absolute;
+    bottom: calc(100% + var(--sp-1));
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    width: 168px;
+    height: 45px;
+    padding: 0 0 7px;          /* = tail depth, keeps text centred in the pill */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: var(--w-lead);
+    line-height: var(--lh-label);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--t1);
+    -webkit-text-fill-color: var(--t1);
+    isolation: isolate;
+    -webkit-clip-path: path("M19 0H149A19 19 0 0 1 149 38H92L84 45L76 38H19A19 19 0 0 1 19 0Z");
+    clip-path: path("M19 0H149A19 19 0 0 1 149 38H92L84 45L76 38H19A19 19 0 0 1 19 0Z");
+    background-color: rgba(255, 255, 255, 0.035);
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='168'%20height='45'%20viewBox='0%200%20168%2045'%3E%3Cdefs%3E%3ClinearGradient%20id='rim'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'%20stop-opacity='0.9'/%3E%3Cstop%20offset='0.06'%20stop-color='%23ffffff'%20stop-opacity='0.15'/%3E%3Cstop%20offset='0.4'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3Cstop%20offset='0.6'%20stop-color='%23ffffff'%20stop-opacity='0'/%3E%3Cstop%20offset='0.94'%20stop-color='%23ffffff'%20stop-opacity='0.25'/%3E%3Cstop%20offset='1'%20stop-color='%23ffffff'%20stop-opacity='0.7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath%20d='M19%200H149A19%2019%200%200%201%20149%2038H92L84%2045L76%2038H19A19%2019%200%200%201%2019%200Z'%20fill='none'%20stroke='url(%23rim)'%20stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    backdrop-filter: blur(6px) saturate(120%);
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease,
+                transform 0.28s cubic-bezier(0.34, 1.4, 0.5, 1);
+    z-index: 20;
+  }
+
+  .hero h1 .swiggy-brand:hover .brand-tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ==========================================================================
+     Work view — typography ported from the reference (measured at 430px)
+     Reference facts: bg #0a0a0a, primary #ffffff, secondary #8f8f8f, and NO
+     third grey. Hierarchy comes from weight + tracking: uppercase labels are
+     white at weight 800 with +2px tracking, while body copy is grey at 400
+     with near-zero tracking (-0.04px) and a tight 1.4 line-height.
+     ========================================================================== */
+  #view-work .hero { padding: var(--sp-5) 0 var(--sp-5); }
+
+  /* The hero sentence maps to the reference's intro paragraph: grey base with
+     white/accent words carrying the emphasis, not an all-white headline. */
+  #view-work .hero h1 {
+    font-size: var(--fs-lead);
+    font-weight: var(--w-lead);
+    line-height: var(--lh-lead);
+    letter-spacing: var(--ls-lead);
+    color: var(--t1);
+  }
+  #view-work .hero h1 .muted,
+  #view-work .hero h1 .sub-line { color: var(--t2); font-weight: 500; }
+
+  /* Every uppercase label shares one treatment */
+  #view-work .project .info .meta {
+    font-size: var(--fs-label);
+    font-weight: var(--w-label);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--t1);
+    opacity: 1;
+  }
+  /* Structural labels sit back in grey; the button stays white */
+  #view-work .hero-credits .credits-label {
+    font-size: var(--fs-label);
+    font-weight: var(--w-label);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    opacity: 1;
+    color: var(--t2);
+  }
+
+  #view-work .hero-credits { margin-top: var(--sp-3); }
+  /* Eyebrow sits tight to what it labels — one step down the scale (24 → 8) */
+  #view-work .hero-credits .credits-label { margin-bottom: 12px; }
+
+
+  /* Down chevron at the right of SELECTED WORK */
+  #view-work .section-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    /* breathing room above the label when it scrolls to the top */
+    scroll-margin-top: var(--sp-2);
+    -webkit-tap-highlight-color: transparent;
+  }
+  #view-work .section-label:hover { color: var(--t1); }
+  #view-work .section-label:focus-visible {
+    outline: 2px solid #f5f5f5;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  #view-work .section-label::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin-right: 2px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    /* translate BEFORE rotate so it moves on the screen axis, not the
+       chevron's own rotated axis — makes the bob read as up/down. */
+    transform: translateY(-3px) rotate(45deg);
+  }
+  @keyframes chevron-bob {
+    0%, 100% { transform: translateY(-3px) rotate(45deg); }
+    50%      { transform: translateY(1px)  rotate(45deg); }
+  }
+  #view-work .section-label:hover::after {
+    animation: chevron-bob 1.4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #view-work .section-label:hover::after { animation: none; }
+  }
+
+  #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-5); }
+  #view-work .project .info { padding: var(--sp-2) 0 0; }
+  /* Project meta drops to the reference's smaller eyebrow step and to grey,
+     so it reads as a caption rather than competing with the section label
+     and the button, which stay white at 12/800/+2px. */
+  #view-work .project .info .meta {
+    font-size: var(--fs-label);
+    font-weight: var(--w-label-sm);
+    letter-spacing: var(--ls-label-sm);
+    color: var(--t2);
+    margin-bottom: var(--sp-1);
+  }
+  #view-work .project .info .meta .sep { color: rgba(255, 255, 255, 0.22); }
+  #view-work .project .info h3 {
+    font-size: var(--fs-lead);
+    font-weight: var(--w-lead);
+    line-height: var(--lh-lead);
+    letter-spacing: var(--ls-lead);
+    color: var(--t1);
+  }
+  #view-work .project .info p {
+    font-size: var(--fs-body);
+    font-weight: 400;
+    line-height: var(--lh-body);
+    letter-spacing: var(--ls-body);
+    color: var(--t2);
+    margin-top: var(--sp-1);
+    max-width: 60ch;
+  }
+  #view-work .project .info p .hl { color: var(--t1); font-weight: 500; }
+  /* Sentence case, so the +2px tracking that makes uppercase labels legible
+     comes off — it reads as gappy on mixed case. Glass surface untouched. */
+  #view-work .project .btn {
+    margin-top: var(--sp-2);
+    padding: 11px 20px;          /* 4px in from 15/24 */
+    font-size: 14px;             /* 2px down from --fs-body */
+    font-weight: var(--w-lead);
+    line-height: var(--lh-label);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--t1);
+  }
+
   /* ==========================================================================
      Responsive
      ========================================================================== */
   /* Tablet */
   @media (max-width: 900px) {
-    .wrap { padding: 0 24px; }
+    :root {
+      --fs-lead: 28px;
+      --fs-body: 15px;
+    }
+    /* .wrap horizontal padding is 24px at every size, matching the reference */
     .hero { padding: 64px 0 72px; }
-    .hero h1 { font-size: 26px; }
-    .hero-credits { margin-top: 40px; }
-    .hero-credits .credits-label { font-size: 17px; }
-    .section-label { font-size: 26px; }
-    .project .info h3 { font-size: 28px; }
-    .project .info p { font-size: 17px; }
   }
 
   /* Mobile */
   @media (max-width: 640px) {
-    .wrap { padding: 0 20px; }
+    /* Measured directly from the reference at 430px */
+    :root {
+      --fs-lead: 24px;
+      --fs-body: 13px;
+      --fs-label: 12px;
+      --fs-row: 16px;     /* NOT measured — reference headings only read at desktop */
+    }
+    #view-work .hero-credits { margin-top: var(--sp-2); }
+    #view-work .projects { gap: var(--sp-4); padding-bottom: var(--sp-4); }
+
 
     /* Top bar — Smit + tabs vertically centered to each other, both pushed down from notch */
     .bar {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      padding: 44px 0 0;
+      padding: var(--sp-3) 0 0;
       position: static;
       justify-content: initial;
       flex-wrap: initial;
@@ -1442,25 +1722,13 @@
 
     /* Hero — more breathing room above and below */
     .hero { padding: 104px 0 40px; }
-    .hero h1 { font-size: 22px; }
     .hero-art { width: 85px; }
-    .hero-credits { margin-top: 32px; }
-    .hero-credits .credits-label { font-size: 15px; }
     .hero-logos { gap: 8px; }
     .hero-logos a { width: 48px; height: 48px; border-radius: 10px; }
 
-    /* Section heading — extra space above so it separates from hero clearly */
-    .section-label {
-      font-size: 22px;
-      padding: 0 0 10px;
-      margin-top: 104px;
-      margin-bottom: 28px;
-    }
 
     /* Projects — wider gap between each */
     .projects { gap: 72px; }
-    .project .info h3 { font-size: 22px; }
-    .project .info p { font-size: 15px; margin-top: 6px; }
     .project .btn {
       margin-top: 18px;
       padding: 11px 22px;
@@ -1468,7 +1736,7 @@
     }
 
     /* Footer — 2 columns on mobile; separator sits lower */
-    footer { padding: 120px 0 32px; }
+    footer { padding: var(--sp-4) 0 var(--sp-2); }
     .footer-grid {
       grid-template-columns: 1fr 1fr;
       gap: 20px;
@@ -1495,8 +1763,8 @@
       transform: translate(70px, calc(-100% + 14px)) rotate(-13deg);
     }
     .sticky .note-heading { font-size: 16px; }
-    .sticky .note-links a,
-    .sticky .note-email-link { font-size: 15px; }
+    .sticky { --note-email-fs: 15px; }
+    .sticky .note-links a { font-size: 15px; }
     .sticky .note-tab { font-size: 16px; }
     .sticky .note-icon-arrow { width: 22px; height: 22px; }
 
@@ -1509,49 +1777,26 @@
       padding: 32px 0 24px;
     }
     .profile-stamp {
-      width: 216px;
+      width: 194px;
       margin: 0;
       padding-bottom: 8px;
     }
     .profile-text {
       padding-top: 0;
     }
-    .profile-heading {
-      font-size: 22px;
-      letter-spacing: 0.11px;
-      margin-bottom: 14px;
-    }
-    .profile-para {
-      font-size: 16px;
-      letter-spacing: 0.4px;
-      line-height: 130%;
-      margin-bottom: 12px;
-    }
+    .profile-para { margin-bottom: var(--sp-2); }
     /* Give the description block breathing room before "Journey so far" */
-    .profile-para:last-of-type { margin-bottom: 72px; }
+    .profile-para:last-of-type { margin-bottom: var(--sp-3); }
 
-    .about .section-label {
-      padding-bottom: 12px;
-      margin-bottom: 24px;
-    }
+
 
     /* Experience item — two-column layout on mobile (company/dates left, role/description right) */
     .experience-item {
       grid-template-columns: minmax(0, 1fr) 1.6fr;
       gap: 20px;
-      padding: 24px 0;
+      padding: 20px 0;
     }
-    .exp-company,
-    .exp-role {
-      font-size: 20px;
-      letter-spacing: 0.1px;
-      margin-bottom: 6px;
-    }
-    .exp-dates,
-    .exp-description {
-      font-size: 14px;
-      letter-spacing: 0.3px;
-    }
+
     .exp-description { max-width: none; }
 
     /* Password modal — align to top with breathing room, so mobile keyboard
@@ -1564,14 +1809,12 @@
 
   /* Small mobile */
   @media (max-width: 400px) {
-    .wrap { padding: 0 16px; }
-    .hero h1 { font-size: 20px; }
+    :root { --fs-lead: 22px; }
+    #view-work .project .info p { max-width: none; }
+
     .hero-art { width: 70px; }
     .hero-logos { gap: 6px; }
     .hero-logos a { width: 44px; height: 44px; border-radius: 8px; }
-    .section-label { font-size: 20px; }
-    .project .info h3 { font-size: 20px; }
-    .project .info p { font-size: 14px; }
     .sticky {
       width: 220px;
       padding: 20px 20px 18px;
@@ -1586,8 +1829,24 @@
      ========================================================================== */
   @media (hover: none) {
     /* Swiggy — kill candy gradient + glow on touch */
-    .hero h1 .swiggy-brand,
-    .hero h1 .swiggy-brand:hover {
+    /* Brand labels are centred on their tile; for the leftmost logos the
+       label is wider than the tile and ran off the page edge. Anchor the
+       first two from the left so they stay inside the viewport. */
+    .hero-logos a:nth-child(1) .brand-label,
+    .hero-logos a:nth-child(2) .brand-label {
+      left: 0;
+      transform: translateX(0) translateY(4px);
+    }
+    .hero-logos a:nth-child(1).tapped .brand-label,
+    .hero-logos a:nth-child(2).tapped .brand-label {
+      transform: translateX(0) translateY(0);
+    }
+
+    /* No tooltip on touch — there is no hover to reveal it. */
+    .hero h1 .swiggy-brand .brand-tip { display: none; }
+
+    .hero h1 .swiggy-brand .swiggy-word,
+    .hero h1 .swiggy-brand:hover .swiggy-word {
       background: none;
       -webkit-background-clip: initial;
               background-clip: initial;
@@ -1643,6 +1902,55 @@
     .sticky .note-links a:hover .note-icon-arrow path { fill: #3F3D30; }
     .sticky .note-email-row:hover .note-copy-label { opacity: 0; }
 
+    /* Tap-to-copy feedback on touch — a real credits roll.
+       The row is a fixed-height window; ONE element (the track) moves, so
+       there are no competing per-element percentage translations. The track
+       holds three equal lines: email, confirmation, then an identical copy
+       of the email line. It only ever rolls upward; once the third line is
+       showing, the track snaps back to line one with the transition off,
+       which is invisible because lines one and three are identical. */
+    .sticky { --note-line-h: 28px; }
+    .sticky .note-email-row {
+      position: relative;
+      overflow: hidden;
+      height: var(--note-line-h);
+      display: block;
+    }
+    .sticky .note-email-track {
+      display: block;
+      transform: translateY(0);
+      transition: transform 0.42s cubic-bezier(0.4, 0.05, 0.25, 1);
+      will-change: transform;
+    }
+    .sticky .note-email-line {
+      height: var(--note-line-h);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sticky .note-email-line-copied,
+    .sticky .note-email-line-ghost { display: flex; }
+    .sticky .note-email-line-copied {
+      color: #3F3DFF;
+      white-space: nowrap;
+    }
+    .sticky .note-email-link-ghost {
+      color: #2b2b2b;
+      white-space: nowrap;
+    }
+    .sticky .note-copy-ghost {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+    }
+    /* Track positions: one line = one third of the track's own height. */
+    .sticky .note-email-track.roll-1 { transform: translateY(-33.3333%); }
+    .sticky .note-email-track.roll-2 { transform: translateY(-66.6667%); }
+    .sticky .note-email-track.no-anim { transition: none; }
+    /* The email line carries the message now — suppress the duplicate
+       "copied" label under the icon so it isn't said twice. */
+    .sticky .note-copy.copied .note-copy-label { opacity: 0; }
+
     /* Sticky note — hovering does NOT open. Only .open class does. */
     .sticky:hover,
     .sticky:focus-within {
@@ -1674,13 +1982,24 @@
   <div class="note-divider" aria-hidden="true"></div>
   <div class="note-links">
     <div class="note-email-row">
-      <a href="mailto:smitmp12@gmail.com" class="note-email-link" data-email="smitmp12@gmail.com">smitmp12@gmail.com</a>
-      <button type="button" class="note-copy" aria-label="Copy email address" title="Copy email">
-        <svg class="note-icon note-icon-copy" width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <div class="note-email-track">
+        <div class="note-email-line">
+          <a href="mailto:smitmp12@gmail.com" class="note-email-link" data-email="smitmp12@gmail.com"><span class="note-email-text">smitmp12@gmail.com</span></a>
+          <button type="button" class="note-copy" aria-label="Copy email address" title="Copy email">
+            <svg class="note-icon note-icon-copy" width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M11.3359 6.0026C11.3343 4.03121 11.3045 3.01008 10.7306 2.31089C10.6198 2.17586 10.496 2.05206 10.361 1.94124C9.6234 1.33594 8.5276 1.33594 6.33594 1.33594C4.14428 1.33594 3.04846 1.33594 2.31089 1.94124C2.17586 2.05205 2.05206 2.17586 1.94124 2.31089C1.33594 3.04846 1.33594 4.14428 1.33594 6.33594C1.33594 8.5276 1.33594 9.6234 1.94124 10.361C2.05205 10.496 2.17586 10.6198 2.31089 10.7306C3.01008 11.3045 4.03121 11.3343 6.0026 11.3359M6.0026 10.0026C6.0026 8.117 6.0026 7.1742 6.58839 6.58839C7.1742 6.0026 8.117 6.0026 10.0026 6.0026H10.6693C12.5549 6.0026 13.4977 6.0026 14.0835 6.58839C14.6693 7.1742 14.6693 8.117 14.6693 10.0026V10.6693C14.6693 12.5549 14.6693 13.4977 14.0835 14.0835C13.4977 14.6693 12.5549 14.6693 10.6693 14.6693H10.0026C8.117 14.6693 7.1742 14.6693 6.58839 14.0835C6.0026 13.4977 6.0026 12.5549 6.0026 10.6693V10.0026Z" stroke="#3F3D30" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span class="note-copy-label" aria-hidden="true">copy</span>
-      </button>
+            <span class="note-copy-label" aria-hidden="true"><span class="note-copy-label-inner">copy</span></span>
+          </button>
+        </div>
+        <div class="note-email-line note-email-line-copied" aria-hidden="true">email id copied</div>
+        <div class="note-email-line note-email-line-ghost" aria-hidden="true">
+          <span class="note-email-link-ghost">smitmp12@gmail.com</span>
+          <span class="note-copy-ghost"><svg class="note-icon note-icon-copy" width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M11.3359 6.0026C11.3343 4.03121 11.3045 3.01008 10.7306 2.31089C10.6198 2.17586 10.496 2.05206 10.361 1.94124C9.6234 1.33594 8.5276 1.33594 6.33594 1.33594C4.14428 1.33594 3.04846 1.33594 2.31089 1.94124C2.17586 2.05205 2.05206 2.17586 1.94124 2.31089C1.33594 3.04846 1.33594 4.14428 1.33594 6.33594C1.33594 8.5276 1.33594 9.6234 1.94124 10.361C2.05205 10.496 2.17586 10.6198 2.31089 10.7306C3.01008 11.3045 4.03121 11.3343 6.0026 11.3359M6.0026 10.0026C6.0026 8.117 6.0026 7.1742 6.58839 6.58839C7.1742 6.0026 8.117 6.0026 10.0026 6.0026H10.6693C12.5549 6.0026 13.4977 6.0026 14.0835 6.58839C14.6693 7.1742 14.6693 8.117 14.6693 10.0026V10.6693C14.6693 12.5549 14.6693 13.4977 14.0835 14.0835C13.4977 14.6693 12.5549 14.6693 10.6693 14.6693H10.0026C8.117 14.6693 7.1742 14.6693 6.58839 14.0835C6.0026 13.4977 6.0026 12.5549 6.0026 10.6693V10.0026Z" stroke="#3F3D30" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg></span>
+        </div>
+      </div>
     </div>
     <a href="https://www.linkedin.com/in/smit-prajapati-146585a4/" target="_blank" rel="noopener">Linkedin <svg class="note-icon note-icon-arrow" width="28" height="28" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.13831 9.01759C9.13831 8.49983 9.55898 8.07916 10.0767 8.07916L16.4407 8.07916C16.6893 8.07916 16.9278 8.17887 17.1036 8.35468C17.2794 8.53049 17.3791 8.76895 17.3791 9.01759V15.3816C17.3791 15.8993 16.9585 16.32 16.4407 16.32C15.9229 16.32 15.5023 15.8993 15.5023 15.3816V11.2819L9.679 17.1051C9.31288 17.4712 8.71929 17.4712 8.35317 17.1051C7.98706 16.739 7.98706 16.1454 8.35317 15.7793L14.1764 9.95603L10.0767 9.95603C9.55898 9.95603 9.13831 9.53536 9.13831 9.01759Z" fill="#3F3D30" stroke="#F6DF58" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     <a href="https://www.instagram.com/smitt_8/" target="_blank" rel="noopener">Instagram <svg class="note-icon note-icon-arrow" width="28" height="28" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9.13831 9.01759C9.13831 8.49983 9.55898 8.07916 10.0767 8.07916L16.4407 8.07916C16.6893 8.07916 16.9278 8.17887 17.1036 8.35468C17.2794 8.53049 17.3791 8.76895 17.3791 9.01759V15.3816C17.3791 15.8993 16.9585 16.32 16.4407 16.32C15.9229 16.32 15.5023 15.8993 15.5023 15.3816V11.2819L9.679 17.1051C9.31288 17.4712 8.71929 17.4712 8.35317 17.1051C7.98706 16.739 7.98706 16.1454 8.35317 15.7793L14.1764 9.95603L10.0767 9.95603C9.55898 9.95603 9.13831 9.53536 9.13831 9.01759Z" fill="#3F3D30" stroke="#F6DF58" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -1714,7 +2033,7 @@
       <span class="eye eye-right" aria-hidden="true"></span>
     </div>
 
-    <h1>Lead Product Designer <span class="muted">at</span> <span class="swiggy-brand">Swiggy</span>,<span class="sub-line"><br>driving loyalty &amp; growth across<br>Food &amp; Instamart.</span></h1>
+    <h1>Lead Product Designer <span class="muted">at</span> <span class="swiggy-brand"><span class="swiggy-word">Swiggy</span><span class="brand-tip" aria-hidden="true">23 Mn monthly users</span></span>,<span class="sub-line"><br>driving loyalty &amp; growth across<br>Food &amp; Instamart.</span></h1>
 
     <div class="hero-credits">
       <div class="credits-label">Have contributed at</div>
@@ -1804,7 +2123,7 @@
   </header>
 
   <!-- PROJECTS -->
-  <div class="section-label">Selected Work</div>
+  <div class="section-label" role="button" tabindex="0" aria-label="Jump to selected work">Selected Work</div>
   <section class="projects">
 
     <div class="project">
@@ -1908,8 +2227,8 @@
         </div>
         <div class="profile-text">
           <h2 class="profile-heading">Yes, Smit is my real name!</h2>
-          <p class="profile-para">I&rsquo;m a self-taught product designer who loves creating digital experiences that not only leaves positive impact on people but also help businesses succeed.</p>
-          <p class="profile-para">When I&rsquo;m not designing, you&rsquo;ll find me nerding-out about recent football/cricket matches, playing FIFA, clicking/editing pictures. Also love to explore new places I&rsquo;ve never been to (cliche but the truth). See you around!</p>
+          <p class="profile-para">I&rsquo;m a self-taught product designer who loves building digital experiences that leave a positive impact on people and help businesses grow. Most of my work sits where consumer behaviour meets business goals &mdash; loyalty, growth, and the small details that quietly decide whether someone comes back.</p>
+          <p class="profile-para">When I&rsquo;m not designing, you&rsquo;ll find me nerding-out about recent football/cricket matches, playing FIFA, clicking/editing pictures. Feel free to share your Ultimate Team ID if you also play FIFA &mdash; always up for a game. I also love exploring new places I&rsquo;ve never been to (cliche, but the truth). See you around!</p>
         </div>
       </div>
       <div class="section-label">Journey so far</div>
@@ -1951,7 +2270,7 @@
           </div>
           <div class="exp-right">
             <h3 class="exp-role">Lead Product Designer</h3>
-            <p class="exp-description">Driving consumer growth across Food &amp; Instamart. Moved back to India. <span class="flag">🇮🇳</span></p>
+            <p class="exp-description">Driving consumer growth across Food &amp; Instamart for 23 Mn monthly active users. Moved back to India. <span class="flag">🇮🇳</span></p>
           </div>
         </div>
       </div>
@@ -2092,6 +2411,9 @@
     (function () {
       var wrap = document.querySelector('.hero-art-wrap');
       if (!wrap) return;
+      // Bail while the illustration is disabled — offsetParent is null when
+      // the element is display:none, so no listener or rAF work is done.
+      if (!wrap.offsetParent) return;
       var pendingX = 0, pendingY = 0;
       var raf = null;
 
@@ -2326,19 +2648,15 @@
         window.addEventListener('deviceorientation', onOrientation, true);
       }
 
-      // iOS 13+ path — one tap on the photo requests sensor permission.
+      // iOS 13+ requires an explicit user gesture before it will even ask for
+      // sensor access — there is no way to enable this silently there. Rather
+      // than make the photo a tap target that fires a permission dialog, the
+      // effect is simply skipped on those devices; the photo keeps its static
+      // tilt. Android and older iOS activate on their own, no tap needed.
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        var enable = function () {
-          DeviceOrientationEvent.requestPermission()
-            .then(function (state) { if (state === 'granted') activate(); })
-            .catch(function () {});
-          stamp.removeEventListener('click', enable);
-        };
-        stamp.addEventListener('click', enable);
-      } else {
-        // Android + older iOS — sensor access is unrestricted.
-        activate();
+        return;
       }
+      activate();
     })();
 
     // Photography lightbox — tap to zoom from its spot, tap outside to return
@@ -2455,6 +2773,42 @@
 
     var ledgerVideo = document.getElementById('ledger-video');
 
+    // Focus without letting the browser run its "scroll the focused element
+    // into view" heuristic. On mobile that heuristic fires on every auto-advance
+    // between pin boxes and nudges the page, even though the next box is already
+    // fully visible. Skips entirely if the element is already focused.
+    function focusNoScroll(el) {
+      if (!el || document.activeElement === el) return;
+      try {
+        el.focus({ preventScroll: true });
+      } catch (err) {
+        el.focus();
+      }
+    }
+
+    // iOS Safari ignores `body { overflow: hidden }`, so the page stays
+    // scrollable behind the modal and any focus-driven scroll springs back.
+    // Pinning the body at its current offset is the pattern that actually holds.
+    var scrollLockY = 0;
+    function lockScroll() {
+      scrollLockY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      document.body.style.position = 'fixed';
+      document.body.style.top = (-scrollLockY) + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    }
+    function unlockScroll() {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, scrollLockY);
+    }
+
     function openModal(e) {
       if (e) e.preventDefault();
       // Read this project's case-study URL from the button's data-link attribute
@@ -2462,7 +2816,7 @@
       lastFocused = document.activeElement;
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+      lockScroll();
       // Pause the first project's background video while the modal is open
       if (ledgerVideo) {
         try { ledgerVideo.pause(); } catch (err) {}
@@ -2472,20 +2826,20 @@
       // at the moment focus() runs (and only while we're still inside the user's tap
       // handler, so no setTimeout).
       void modal.offsetHeight;
-      pinBoxes[0].focus();
+      focusNoScroll(pinBoxes[0]);
     }
 
     function closeModal() {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      unlockScroll();
       resetPin();
       // Resume the first project's background video after closing
       if (ledgerVideo) {
         var p = ledgerVideo.play();
         if (p && typeof p.catch === 'function') p.catch(function () {});
       }
-      if (lastFocused) lastFocused.focus();
+      if (lastFocused) focusNoScroll(lastFocused);
     }
 
     triggers.forEach(function (btn) {
@@ -2512,11 +2866,11 @@
         pinBoxes.forEach(function (b) { b.classList.remove('shake', 'error'); });
         form.classList.remove('error');
         clearTimeout(errorTimer);
-        if (box.value && pinBoxes[i + 1]) pinBoxes[i + 1].focus();
+        if (box.value && pinBoxes[i + 1]) focusNoScroll(pinBoxes[i + 1]);
       });
       box.addEventListener('keydown', function (e) {
         if (e.key === 'Backspace' && !box.value && pinBoxes[i - 1]) {
-          pinBoxes[i - 1].focus();
+          focusNoScroll(pinBoxes[i - 1]);
         }
         // Enter acts the same as the Submit button
         if (e.key === 'Enter') {
@@ -2537,7 +2891,7 @@
           if (pinBoxes[i + j]) pinBoxes[i + j].value = d;
         });
         var next = pinBoxes[Math.min(i + digits.length, pinBoxes.length - 1)];
-        next.focus();
+        focusNoScroll(next);
       });
     });
 
@@ -2569,7 +2923,7 @@
       // Clear digits shortly after jitter finishes so the user can re-enter
       setTimeout(function () {
         pinBoxes.forEach(function (b) { b.value = ''; });
-        pinBoxes[0].focus();
+        focusNoScroll(pinBoxes[0]);
       }, 340);
     }
 
@@ -2624,6 +2978,32 @@
         }
       });
     }
+  })();
+
+  // "Selected Work" + chevron — scrolls the first project into view.
+  (function () {
+    var label = document.querySelector('#view-work .section-label');
+    var projects = document.querySelector('#view-work .projects');
+    if (!label || !projects) return;   // no-op if the section is absent
+
+    function jump() {
+      var reduced = window.matchMedia &&
+                    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Land on the label itself, so the heading, its rule and the first
+      // project are all in view — not just the projects list.
+      label.scrollIntoView({
+        behavior: reduced ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    }
+
+    label.addEventListener('click', jump);
+    label.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        jump();
+      }
+    });
   })();
 
   // Live IST clock in footer
@@ -2810,11 +3190,15 @@
     var copyBtn = document.querySelector('.sticky .note-copy');
     var emailEl = document.querySelector('.sticky .note-email-link');
     var labelEl = document.querySelector('.sticky .note-copy-label');
+    var labelInner = document.querySelector('.sticky .note-copy-label-inner');
+    var track = document.querySelector('.sticky .note-email-track');
     if (!copyBtn || !emailEl) return;
 
     var defaultLabel = 'copy';
     var flipTimer = null;
     var resetTimer = null;
+    var snapTimer = null;
+    var ROLL_MS = 420;
 
     function fallbackCopy(text) {
       var ta = document.createElement('textarea');
@@ -2827,48 +3211,68 @@
       try { document.execCommand('copy'); } catch (_) {}
       document.body.removeChild(ta);
     }
-    function flipTo(newText) {
-      if (!labelEl) return;
+    // Desktop label credits roll — restart the animation, then swap the text
+    // at the midpoint while the line is outside the clip box.
+    function rollTo(newText) {
+      if (!labelEl || !labelInner) return;
       clearTimeout(flipTimer);
-      labelEl.classList.remove('flip');
+      labelEl.classList.remove('roll');
       void labelEl.offsetWidth;
-      labelEl.classList.add('flip');
-      flipTimer = setTimeout(function () { labelEl.textContent = newText; }, 220);
+      labelEl.classList.add('roll');
+      flipTimer = setTimeout(function () { labelInner.textContent = newText; }, 220);
     }
     function showCopied() {
       copyBtn.classList.add('copied');
       var isTouch = window.matchMedia && window.matchMedia('(hover: none)').matches;
 
       if (isTouch) {
-        // Mobile — no flip. Just set text and let the CSS opacity transition
-        // handle the fade-in when .copied is applied.
+        // Mobile — roll the track up one line to reveal the confirmation.
+        // Leave the icon label alone; CSS keeps it hidden on touch.
         clearTimeout(flipTimer);
-        if (labelEl) {
-          labelEl.classList.remove('flip');
-          labelEl.textContent = 'copied';
+        clearTimeout(snapTimer);
+        if (labelEl) labelEl.classList.remove('roll');
+        if (track) {
+          // Always start from line one, without animating the reset.
+          track.classList.add('no-anim');
+          track.classList.remove('roll-1', 'roll-2');
+          void track.offsetWidth;
+          track.classList.remove('no-anim');
+          void track.offsetWidth;
+          track.classList.add('roll-1');
         }
       } else {
-        // Desktop — flip from "copy" to "copied"
-        flipTo('copied');
+        // Desktop — roll from "copy" to "copied"
+        rollTo('copied');
       }
 
       clearTimeout(resetTimer);
       resetTimer = setTimeout(function () {
         copyBtn.classList.remove('copied');
         if (isTouch) {
-          // Wait for opacity fade-out to finish, then reset the text silently
-          setTimeout(function () {
-            if (labelEl) labelEl.textContent = defaultLabel;
-          }, 220);
+          if (!track) return;
+          // Keep rolling upward to the duplicate email line...
+          track.classList.remove('roll-1');
+          track.classList.add('roll-2');
+          // ...then snap back to the identical first line with the
+          // transition off, so the jump is invisible.
+          clearTimeout(snapTimer);
+          snapTimer = setTimeout(function () {
+            track.classList.add('no-anim');
+            track.classList.remove('roll-2');
+            void track.offsetWidth;
+            track.classList.remove('no-anim');
+          }, ROLL_MS + 60);
         } else {
-          flipTo(defaultLabel);
+          rollTo(defaultLabel);
         }
       }, 1600);
     }
     function doCopy(e) {
       e.preventDefault();
       e.stopPropagation();
-      var email = emailEl.getAttribute('data-email') || emailEl.textContent;
+      var emailTextEl = emailEl.querySelector('.note-email-text');
+      var email = emailEl.getAttribute('data-email') ||
+                  (emailTextEl ? emailTextEl.textContent : emailEl.textContent);
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(email).then(showCopied, function () {
           fallbackCopy(email); showCopied();
