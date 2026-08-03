@@ -3,7 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio — Product Designer [INTER PREVIEW]</title>
+<title>Smit - Portfolio</title>
+<meta name="description" content="Vibecoded over a weekend between multiple naps! 🛌">
+
+<!-- Open Graph — controls the preview card on WhatsApp, iMessage, LinkedIn, Slack, Facebook, etc. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Smit - Portfolio">
+<meta property="og:description" content="Vibecoded over a weekend between multiple naps! 🛌">
+<meta property="og:image" content="preview.png">
+<meta property="og:url" content="https://smit-plum.vercel.app/">
+<meta property="og:site_name" content="Smit — Portfolio">
+
+<!-- Twitter/X Card — separate spec, some clients (esp. X) look here specifically -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Smit - Portfolio">
+<meta name="twitter:description" content="Vibecoded over a weekend between multiple naps! 🛌">
+<meta name="twitter:image" content="preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -301,7 +316,7 @@
   .sticky .note-heading {
     font-size: 18px;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
     margin-bottom: 10px;
     opacity: 0;
     transition: opacity 0.28s ease 0.06s;
@@ -335,7 +350,7 @@
     align-items: center;
     gap: 4px;
     font-size: 17px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
     color: #2b2b2b;
     width: fit-content;
     text-decoration: none;
@@ -360,7 +375,7 @@
   }
   .sticky .note-email-link {
     font-size: var(--note-email-fs);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
     color: #2b2b2b;
     text-decoration: none;
     transition: color 0.18s ease;
@@ -376,7 +391,7 @@
   .sticky .note-email-line-copied,
   .sticky .note-email-link-ghost {
     font-size: var(--note-email-fs);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
   }
   .sticky .note-email-line-copied,
   .sticky .note-email-line-ghost { display: none; }
@@ -403,7 +418,7 @@
     left: 50%;
     transform: translateX(-50%);
     font-size: 13px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
     color: #2b2b2b;
     opacity: 0;
     pointer-events: none;
@@ -442,7 +457,7 @@
   .sticky .note-tab {
     font-size: 18px;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.005em;
     color: #2b2b2b;
   }
 
@@ -936,6 +951,20 @@
     transform: scale(0.98);
     transition: transform 0.12s ease;
   }
+  /* Disabled state — "Coming soon" projects. Muted, non-interactive, no
+     wobble/hover animation, no click. */
+  .project .btn.is-disabled {
+    color: var(--t3);
+    background: rgba(255, 255, 255, 0.02);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .project .btn.is-disabled::before { opacity: 0.12; }
+  .project .btn.is-disabled:hover,
+  .project .btn.is-disabled:active {
+    animation: none;
+    transform: none;
+  }
   @keyframes waterTension {
     0%, 100% { transform: scale(1.033, 0.967); }
     25%      { transform: scale(0.965, 1.04); }
@@ -1318,6 +1347,11 @@
        image shrinks; the column it sits in is unchanged. */
     width: 232px;
     padding-bottom: 32px;
+    /* The -4deg rotation visually lifts the top edge above the grid's actual
+       start line (transforms don't affect layout, only paint), which made the
+       stamp look higher than the heading text beside it. This nudges it back
+       down to compensate — desktop only; mobile's stacked layout doesn't need it. */
+    margin-top: 14px;
     transform: rotate(-4deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
     transform-origin: center;
     transform-style: preserve-3d;
@@ -1675,6 +1709,12 @@
     text-transform: none;
     color: var(--t1);
   }
+  /* Disabled buttons live inside #view-work too — that rule's ID selector
+     otherwise beats the plain .is-disabled class and forces the text back
+     to white. Re-assert the grey here so it actually wins. */
+  #view-work .project .btn.is-disabled {
+    color: var(--t3);
+  }
 
   /* ==========================================================================
      Responsive
@@ -1831,7 +1871,7 @@
     }
     .sticky {
       width: 220px;
-      padding: 20px 20px 18px;
+      padding: 20px 18px 18px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -1913,7 +1953,11 @@
     .sticky { --note-line-h: 28px; }
     .sticky .note-email-row {
       position: relative;
-      overflow: hidden;
+      /* Only the vertical slide needs clipping for the roll animation — the
+         icon was getting cropped on narrow phones when overflow clipped both
+         axes and the row ran a few px past its own width. */
+      overflow-x: visible;
+      overflow-y: hidden;
       height: var(--note-line-h);
       display: block;
     }
@@ -2151,7 +2195,7 @@
         <h3>Swiggy Sixes &lt;&gt; Hotstar Integration</h3>
         <p>Drove a <span class="hl">28%</span> increase in Swiggy orders during IPL match hours, plus <span class="hl">702K orders</span>, <span class="hl">223K app downloads</span> &amp; <span class="hl">88K users</span> acquired from Hotstar, by designing the Swiggy Sixes experience and integrating it into the Hotstar app.</p>
         <!-- PROJECT 1: Swiggy Sixes <> Hotstar Integration — paste case-study URL into data-link -->
-        <a class="btn" role="button" tabindex="0" data-project="swiggy-hotstar" data-link="">Read Case Study</a>
+        <a class="btn" role="button" tabindex="0" data-project="swiggy-hotstar" data-link="https://www.figma.com/proto/1sy2RKFYeHmUtfv6mwFZL1/Smit---Portfolio-2026?node-id=1-9462&viewport=250%2C247%2C0.26&t=Kzb8Q94GuCTuey1m-1&scaling=contain&content-scaling=fixed&starting-point-node-id=1%3A9462&page-id=1%3A2">Read Case Study</a>
       </div>
     </div>
 
@@ -2164,7 +2208,7 @@
         <h3>Buy X Get Y Offer Framework</h3>
         <p>Drove <span class="hl">5K orders/day</span> and boosted Avg. Order Value by <span class="hl">&#8377;0.44</span> by designing flexible BXGY offers (e.g., B3G2, B7G5) while partnering closely with the User Research team &amp; cross functional teams</p>
         <!-- PROJECT 3: Buy X Get Y Offer Framework — paste case-study URL into data-link -->
-        <a class="btn" role="button" tabindex="0" data-project="bxgy-framework" data-link="">Read Case Study</a>
+        <a class="btn" role="button" tabindex="0" data-project="bxgy-framework" data-link="https://www.figma.com/proto/1sy2RKFYeHmUtfv6mwFZL1/Smit---Portfolio-2026?node-id=20-9387&viewport=543%2C436%2C0.05&t=RuMykQmgrQTIKbO0-1&scaling=contain&content-scaling=fixed&starting-point-node-id=20%3A9373&page-id=0%3A1">Read Case Study</a>
       </div>
     </div>
 
@@ -2177,7 +2221,7 @@
         <h3>Restaurant Ambassador</h3>
         <p>Laid the foundation for One BLCK by designing an exclusive &amp; premium experience to help restaurants identify and engage power users as brand ambassadors — aimed at driving order growth and customer loyalty.</p>
         <!-- PROJECT 4: Restaurant Ambassador — paste case-study URL into data-link -->
-        <a class="btn" role="button" tabindex="0" data-project="restaurant-ambassador" data-link="">Read Case Study</a>
+        <a class="btn" role="button" tabindex="0" data-project="restaurant-ambassador" data-link="https://www.figma.com/proto/1sy2RKFYeHmUtfv6mwFZL1/Smit---Portfolio-2026?node-id=20-49258&viewport=585%2C503%2C0.3&t=MT58j3R7Zrwa1gA1-1&scaling=contain&content-scaling=fixed&starting-point-node-id=20%3A49258&page-id=1%3A3">Read Case Study</a>
       </div>
     </div>
 
@@ -2189,8 +2233,8 @@
         <div class="meta">Swiggy <span class="sep">|</span> <span class="year">2026</span></div>
         <h3>Gamifying Swiggy Sixes</h3>
         <p>Drove <span class="hl">~25K incremental daily orders</span> for targeted cohorts by introducing Freehits — an earnable currency (via sharing with friends) that unlocks the Swiggy Sixes offer.</p>
-        <!-- PROJECT 2: Gamifying Swiggy Sixes — paste case-study URL into data-link -->
-        <a class="btn" role="button" tabindex="0" data-project="gamifying-sixes" data-link="">Read Case Study</a>
+        <!-- PROJECT 2: Gamifying Swiggy Sixes — case study not ready yet; disabled -->
+        <a class="btn is-disabled" role="button" aria-disabled="true" tabindex="-1" data-project="gamifying-sixes" data-link="">Coming Soon</a>
       </div>
     </div>
 
@@ -2749,14 +2793,26 @@
   // Password modal — triggered by every "Read Case Study" button
   (function () {
     // Access password for all four project case studies
-    var PASSWORD = '3578';
+    // SHA-256 hash of the password — the real password is never present in
+    // this file, so it can't be read via view-source or dev tools inspection.
+    var PASSWORD_HASH = '4809d1306cd4f438bdfbeed76fb13c0f55047f94f44d6bb94faf554af3c4075e';
+
+    // Hashes a string with SHA-256 using the browser's built-in Web Crypto API
+    // and returns a lowercase hex string, matching the format above.
+    function sha256Hex(str) {
+      var data = new TextEncoder().encode(str);
+      return crypto.subtle.digest('SHA-256', data).then(function (buf) {
+        var bytes = Array.prototype.slice.call(new Uint8Array(buf));
+        return bytes.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      });
+    }
 
     var modal = document.getElementById('pwModal');
     var backdrop = document.getElementById('pwBackdrop');
     var closeBtn = document.getElementById('pwClose');
     var form = document.getElementById('pwForm');
     var pinBoxes = Array.prototype.slice.call(document.querySelectorAll('.pw-pin-box'));
-    var triggers = document.querySelectorAll('.project .btn');
+    var triggers = document.querySelectorAll('.project .btn:not(.is-disabled)');
     var emailLink = document.getElementById('pwEmail');
     var copyTip = document.getElementById('pwCopyTip');
     var errorSub = document.querySelector('.pw-sub-error');
@@ -2931,17 +2987,30 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var value = pinBoxes.map(function (box) { return box.value; }).join('');
-      if (value.length === pinBoxes.length && value === PASSWORD) {
-        // Correct password — close the modal and open LinkedIn in a new tab.
-        closeModal();
-        window.open('https://www.linkedin.com/in/smit-prajapati-146585a4/', '_blank', 'noopener');
-      } else if (value.length === 0) {
+      if (value.length === 0) {
         // Empty submit — cheeky prompt, neutral white color
         showWrongPassword('Seriously, mate \uD83D\uDC40', true);
-      } else {
-        // Incomplete or wrong password → standard red "Incorrect password"
-        showWrongPassword();
+        return;
       }
+      if (value.length !== pinBoxes.length) {
+        // Incomplete entry → standard red "Incorrect password"
+        showWrongPassword();
+        return;
+      }
+      // Hash what was typed and compare against the stored hash — the actual
+      // password is never compared in plaintext or exposed in this file.
+      sha256Hex(value).then(function (hash) {
+        if (hash === PASSWORD_HASH) {
+          // Correct password — close the modal and open this project's case-study
+          // link (set via data-link on the button) in a new tab. Falls back to
+          // LinkedIn if a project doesn't have a link set yet.
+          closeModal();
+          var target = pendingLink || 'https://www.linkedin.com/in/smit-prajapati-146585a4/';
+          window.open(target, '_blank', 'noopener');
+        } else {
+          showWrongPassword();
+        }
+      });
     });
 
     // Copy email to clipboard on tap, show "Copied" tooltip
